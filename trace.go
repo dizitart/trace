@@ -22,7 +22,7 @@ var (
 	ENABLE_TRACE		bool 	= false
 	// Flag to set the tracer to print in Stdout
 	PRINT_TO_STDOUT		bool 	= true
-	// Flag to set the tracer to print in Stdout
+	// Flag to set the tracer to write in a file
 	PRINT_TO_FILE		bool 	= false
 	// Trace log file path
 	TRACE_OUT_FILE		string
