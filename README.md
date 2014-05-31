@@ -24,8 +24,9 @@ func main() {
 
 	// Set up tracing
 	trace.ENABLE_TRACE = true
-	trace.PRINT_TO_FILE = true
-	trace.TRACE_OUT_FILE = "/temp/trace.log"
+	trace.TRACE_OUT_FLAG = trace.OUT_ALL
+	trace.TRACE_FILE_PATH = "/temp/trace.log"
+	trace.TRACE_MSG_FLAG = trace.PRINT_FILE | trace.PRINT_LINE | trace.PRINT_PROC
 
 	someString := "Hello World"
 	// assert
@@ -41,7 +42,7 @@ func main() {
 ```
 
 ##Doc
-    https://godoc.org/github.com/dizitart/trace
+https://godoc.org/github.com/dizitart/trace
 
 ##License
 Copyright (c) 2014 Dizitart

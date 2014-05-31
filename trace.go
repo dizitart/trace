@@ -17,27 +17,39 @@ import (
 )
 
 const (
+	// Switches off other information in trace information
 	PRINT_NONE		byte = 0
+	// Switch to print time
 	PRINT_TIME		byte = 1
+	// Switch to print function name
 	PRINT_PROC		byte = 2
+	// Switch to print source file name
 	PRINT_FILE		byte = 4
+	// Switch yo print current line number
 	PRINT_LINE		byte = 8
-	PRINT_ALL		byte = 15
+	// Switches on all formatting
+	PRINT_ALL		byte = PRINT_TIME | PRINT_PROC | PRINT_FILE | PRINT_LINE
+
+	// Switches off printing
+	OUT_NONE		byte = 0
+	// Switch to print to Stdout
+	OUT_STD			byte = 1
+	// Switch to print to File
+	OUT_FILE		byte = 2
+	// Switches on both File & Stdout printing
+	OUT_ALL			byte = OUT_STD | OUT_FILE
 )
 
 // Use these configuration variables to set tracing parameters
 var (
 	// Flag to enable or disable the Tracing
 	ENABLE_TRACE		bool 	= false
-	// Flag to set the tracer to print in Stdout
-	PRINT_TO_STDOUT		bool 	= true
-	// Flag to set the tracer to write in a file
-	PRINT_TO_FILE		bool 	= false
 	// Trace log file path
-	TRACE_OUT_FILE		string
-	// Trace flag
-	TRACE_FLAG			byte
-
+	TRACE_FILE_PATH		string
+	// Trace message flag
+	TRACE_MSG_FLAG		byte
+	// Output flag
+	TRACE_OUT_FLAG		byte
 )
 
 // Writes information about current source file, line number and input variable
@@ -82,18 +94,18 @@ func Assertf (condition bool, format string, variables ...interface{}) {
 
 // Prints the message and stack trace if set to true
 func trace(msg string, printStack bool) {
-	if PRINT_TO_STDOUT {
+	if TRACE_OUT_FLAG & OUT_STD == OUT_STD {
 		fmt.Println(msg)
 		if printStack {
 			debug.PrintStack()
 		}
 	}
 
-	if PRINT_TO_FILE {
-		if TRACE_OUT_FILE == "" {
+	if TRACE_OUT_FLAG & OUT_FILE == OUT_FILE {
+		if TRACE_FILE_PATH == "" {
 			return
 		} else {
-			file, _ := os.OpenFile(TRACE_OUT_FILE, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+			file, _ := os.OpenFile(TRACE_FILE_PATH, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 			defer file.Close()
 			file.WriteString(msg + "\n")
 			if printStack {
@@ -111,25 +123,26 @@ func createTraceMessage(variable interface {}) string {
 		name := fun.Name()
 
 		sourceFile := filepath.Base(path)
+
 		var msg string = "TRACE"
-		if TRACE_FLAG & PRINT_NONE == PRINT_NONE {
+		if TRACE_MSG_FLAG & PRINT_NONE == PRINT_NONE {
 			msg = msg + ""
 		}
-		if TRACE_FLAG & PRINT_TIME == PRINT_TIME {
+		if TRACE_MSG_FLAG & PRINT_TIME == PRINT_TIME {
 			msg = fmt.Sprintf(msg + " [%v]", time.Now())
 		}
-		if TRACE_FLAG & PRINT_PROC == PRINT_PROC {
+		if TRACE_MSG_FLAG & PRINT_PROC == PRINT_PROC {
 			msg = fmt.Sprintf(msg + " <%s>", name)
 		}
-		if TRACE_FLAG & PRINT_FILE == PRINT_FILE && TRACE_FLAG & PRINT_LINE == PRINT_LINE {
+		if TRACE_MSG_FLAG & PRINT_FILE == PRINT_FILE && TRACE_MSG_FLAG & PRINT_LINE == PRINT_LINE {
 			msg = fmt.Sprintf(msg + " (%s:%d)", sourceFile, line)
-		} else if TRACE_FLAG & PRINT_FILE == PRINT_FILE {
+		} else if TRACE_MSG_FLAG & PRINT_FILE == PRINT_FILE {
 			msg = fmt.Sprintf(msg + " (%s)", sourceFile)
-		} else if TRACE_FLAG & PRINT_LINE == PRINT_LINE {
+		} else if TRACE_MSG_FLAG & PRINT_LINE == PRINT_LINE {
 			msg = fmt.Sprintf(msg + " (%d)", line)
 		}
 
-		msg := fmt.Sprintf(msg + " - %v", variable)
+		msg = fmt.Sprintf(msg + " - %v", variable)
 		return msg
 	}
 	return ""
@@ -145,20 +158,27 @@ func createTraceMessagef(format string, variables ...interface{}) string {
 
 		sourceFile := filepath.Base(path)
 		umsg := fmt.Sprintf(format, variables...)
-		msg := fmt.Sprintf(trace_format, time.Now(), name, sourceFile, line, umsg)
+
+		var msg string = "TRACE"
+		if TRACE_MSG_FLAG & PRINT_NONE == PRINT_NONE {
+			msg = msg + ""
+		}
+		if TRACE_MSG_FLAG & PRINT_TIME == PRINT_TIME {
+			msg = fmt.Sprintf(msg + " [%v]", time.Now())
+		}
+		if TRACE_MSG_FLAG & PRINT_PROC == PRINT_PROC {
+			msg = fmt.Sprintf(msg + " <%s>", name)
+		}
+		if TRACE_MSG_FLAG & PRINT_FILE == PRINT_FILE && TRACE_MSG_FLAG & PRINT_LINE == PRINT_LINE {
+			msg = fmt.Sprintf(msg + " (%s:%d)", sourceFile, line)
+		} else if TRACE_MSG_FLAG & PRINT_FILE == PRINT_FILE {
+			msg = fmt.Sprintf(msg + " (%s)", sourceFile)
+		} else if TRACE_MSG_FLAG & PRINT_LINE == PRINT_LINE {
+			msg = fmt.Sprintf(msg + " (%d)", line)
+		}
+
+		msg = fmt.Sprintf(msg + " - %v", umsg)
 		return msg
 	}
 	return ""
-}
-
-func createMessageFormat() string {
-	var trace_format		string	= "TRACE [%v] <%s> (%s:%d) - %v"
-	if TRACE_FLAG & PRINT_NONE == PRINT_NONE {
-		trace_format = trace_format + " - %v"
-	}
-
-	if TRACE_FLAG & PRINT_TIME == PRINT_TIME {
-		trace_format = trace_format + " [%v]"
-	}
-
 }

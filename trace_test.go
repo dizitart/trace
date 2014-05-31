@@ -70,14 +70,15 @@ func init_trace() {
 		fmt.Println("Couldnot create temp file.")
 		runtime.Goexit()
 	}
-	TRACE_OUT_FILE = tempFile.Name()
-	PRINT_TO_FILE = true
+	TRACE_FILE_PATH = tempFile.Name()
+	TRACE_OUT_FLAG = OUT_ALL
+	TRACE_MSG_FLAG = PRINT_ALL
 }
 
 func close_trace() {
 	tempFile.Close()
-	os.Remove(TRACE_OUT_FILE)
-	PRINT_TO_FILE = false
+	os.Remove(TRACE_FILE_PATH)
+	TRACE_OUT_FLAG = OUT_NONE
 	ENABLE_TRACE = false
 }
 
