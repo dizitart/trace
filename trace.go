@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	// Switches off other information in trace information
+	// Switches off other information in trace message
 	PRINT_NONE		byte = 0
 	// Switch to print time
 	PRINT_TIME		byte = 1
