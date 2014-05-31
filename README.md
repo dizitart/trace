@@ -42,3 +42,8 @@ func main() {
 
 ##Doc
     https://godoc.org/github.com/dizitart/trace
+
+##License
+Copyright (c) 2014 Dizitart
+
+Released under the Apache License, Version 2.0
