@@ -1,4 +1,4 @@
-tracer
+trace
 ======
 
 Go trace utility
