@@ -43,7 +43,7 @@ func TestAssert(t *testing.T) {
 func TestAssertf(t *testing.T) {
 	init_trace()
 	defer close_trace()
-	Assertf("False %v", 2 == 3)
+	Assertf(2 == 3, "False %s", "Assertion Failed!")
 	verify(t, "False Assertion Failed!", 46, "trace_test.go")
 }
 

@@ -1,3 +1,10 @@
+// Copyright 2014 Dizitart. All rights reserved.
+// Use of this source code is governed by a Apache License V2
+// that can be found in the LICENSE file.
+//
+// Author - Anindya Chatterjee (axchatt@dizitart.com)
+
+
 package trace
 
 import (
@@ -54,10 +61,10 @@ func Assert (condition bool) {
 // Checks for a condition; if the condition is false, writes a
 // specified message after formatting it according to a format specifier
 // that shows the call stack.
-func Assertf (format string, condition bool) {
+func Assertf (condition bool, format string, variables ...interface{}) {
 	if ENABLE_TRACE {
 		if !condition {
-			msg := createTraceMessagef(format, "Assertion Failed!")
+			msg := createTraceMessagef(format, variables...)
 			trace(msg, true)
 		}
 	}
