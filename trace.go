@@ -95,10 +95,12 @@ func Assertf (condition bool, format string, variables ...interface{}) {
 	}
 }
 
+// Sets output channels (Stdout, File)
 func SetOut(out OutputChannel) {
 	traceOutFlag = out
 }
 
+// Sets trace message format
 func SetMessageFormat(messageFormat MessageFormat) {
 	traceMessageFlag = messageFormat
 }
