@@ -71,14 +71,14 @@ func init_trace() {
 		runtime.Goexit()
 	}
 	TRACE_FILE_PATH = tempFile.Name()
-	TRACE_OUT_FLAG = OUT_ALL
-	TRACE_MSG_FLAG = PRINT_ALL
+	SetMessageFormat(PRINT_ALL)
+	SetOut(OUT_ALL)
 }
 
 func close_trace() {
 	tempFile.Close()
 	os.Remove(TRACE_FILE_PATH)
-	TRACE_OUT_FLAG = OUT_NONE
+	SetOut(OUT_NONE)
 	ENABLE_TRACE = false
 }
 

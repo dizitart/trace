@@ -24,9 +24,9 @@ func main() {
 
 	// Set up tracing
 	trace.ENABLE_TRACE = true
-	trace.TRACE_OUT_FLAG = trace.OUT_ALL
+	trace.SetOut(trace.OUT_ALL)
 	trace.TRACE_FILE_PATH = "/temp/trace.log"
-	trace.TRACE_MSG_FLAG = trace.PRINT_FILE | trace.PRINT_LINE | trace.PRINT_PROC
+	trace.SetMessageFormat(trace.PRINT_FILE | trace.PRINT_LINE | trace.PRINT_PROC)
 
 	someString := "Hello World"
 	// assert
@@ -39,6 +39,7 @@ func main() {
 	// formatted write
 	trace.Writef("Tracing at %v for value %s", time.Now(), someString)
 }
+
 ```
 
 ##Doc
