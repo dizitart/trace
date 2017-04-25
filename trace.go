@@ -2,7 +2,7 @@
 // Use of this source code is governed by a Apache License V2
 // that can be found in the LICENSE file.
 //
-// Author - Anindya Chatterjee (axchatt@dizitart.com)
+// Author - Anindya Chatterjee (anindya@dizitart.com)
 
 
 package trace
