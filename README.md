@@ -4,6 +4,7 @@ Go Trace Utility
 [![Build Status](https://travis-ci.org/dizitart/trace.svg?branch=master)](https://travis-ci.org/dizitart/trace)
 [![Coverage Status](https://coveralls.io/repos/anidotnet/assert/badge.png?branch=master)](https://coveralls.io/r/anidotnet/assert?branch=master)
 [![GoDoc](https://godoc.org/github.com/dizitart/trace?status.png)](https://godoc.org/github.com/dizitart/trace)
+[![Open Source Helpers](https://www.codetriage.com/dizitart/trace/badges/users.svg)](https://www.codetriage.com/dizitart/trace)
 
 **Install**
 
